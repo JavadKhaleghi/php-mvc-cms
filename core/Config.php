@@ -6,7 +6,7 @@ class Config
 {
     private static $config = [
         'version'            => '1.0.0',
-        'root_directory'     => '/php-mvc-cms', /* change to "/" on a live server */
+        'root_directory'     => '/php-mvc-cms/', /* change to "/" on a live server */
         'default_controller' => 'Home', /* default application controller */
         'default_layout'     => 'site', /* default application layout */
         'default_site_title' => 'PHP MVC CMS', /* default site title */
