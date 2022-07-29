@@ -6,6 +6,7 @@ class Router
 {
     public static function route($url)
     {
+        // extract URL parts
         $ulrElements = explode('/', $url);
 
         // get controller name from the first index of URL
@@ -24,8 +25,19 @@ class Router
         // get params
         array_shift($ulrElements);
 
+        // check if controller class exists
+        if(!class_exists($controller)) {
+            throw new \Exception("The controller [{$controller}] does not exist.");
+        }
+
         // instaciate controller class
         $controllerClass = new $controller($controllerName, $actionName);
+
+        // check if method exists
+        if(!method_exists($controllerClass, $action)) {
+            throw new \Exception("The method [{$action}] does not exist on [{$controller}] controller.");
+        }
+
         call_user_func_array([$controllerClass, $action], $ulrElements);
     }
 }
