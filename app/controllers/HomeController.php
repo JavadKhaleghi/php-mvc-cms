@@ -4,11 +4,11 @@ namespace App\Controllers;
 
 use Core\Controller;
 
-class ArticlesController extends Controller
+class HomeController extends Controller
 {
     public function indexAction()
     {
-        $this->view->setSiteTitle('Articles');
+        $this->view->setSiteTitle('Home :: PHP MVC');
         $this->view->render();
     }
 }
