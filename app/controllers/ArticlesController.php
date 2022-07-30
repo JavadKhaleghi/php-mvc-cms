@@ -6,13 +6,8 @@ use Core\Controller;
 
 class ArticlesController extends Controller
 {
-    public function indexAction($param1, $param2)
+    public function indexAction()
     {
-        die('Index action!' . $param1 . ' ' . $param2);
-    }
-
-    public function fooAction()
-    {
-        die('Foo action');
+        $this->view->render();
     }
 }
