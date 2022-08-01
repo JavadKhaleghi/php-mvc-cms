@@ -83,4 +83,12 @@ class View
             echo '';
         }
     }
+
+    public function section($path)
+    {
+        $fullPath = SITE_ROOT . DS . 'app' . DS . 'views' . DS . $path . '.php';
+        if(file_exists($fullPath)) {
+            include($fullPath);
+        }
+    }
 }
