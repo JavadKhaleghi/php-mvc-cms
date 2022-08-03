@@ -43,10 +43,55 @@ class Database
      */
     public static function getInstance()
     {
-        if(!self::$_db) {
+        if(! self::$_db) {
             self::$_db = new self();
         }
 
         return self::$_db;
+    }
+
+    /**
+     * Execute a raw SQL query
+     */
+    public function execute($sql, $bind = [])
+    {
+        $this->_results = null;
+        $this->_lastInsertId = null;
+        $this->_error = false;
+
+        $this->_statement = $this->_dbHandler->prepare($sql);
+        if(!$this->_statement->execute($bind)) {
+            $this->_error = true;
+        } else {
+            $this->_lastInsertId = $this->_dbHandler->lastInsertId();
+        }
+
+        return $this;
+    }
+
+    public function query($sql, $bind = [])
+    {
+        $this->execute($sql, $bind);
+        if (! $this->_error) {
+            $this->_rowCount = $this->_statement->rowCount();
+            $this->_results = $this->_statement->fetchAll($this->_fetchType);
+        } 
+
+        return $this;
+    }
+
+    public function results()
+    {
+        return $this->_results;
+    }
+
+    public function count()
+    {
+        return $this->_rowCount;
+    }
+
+    public function lastInsertId()
+    {
+        return $this->_lastInsertId;
     }
 }
