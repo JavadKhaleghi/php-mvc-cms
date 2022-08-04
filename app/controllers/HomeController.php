@@ -9,14 +9,10 @@ class HomeController extends Controller
     public function indexAction()
     {
         $db = Database::getInstance();
-        //$sql = "INSERT INTO articles (`title`, `body`) VALUES (:title, :body)";
-        //$bind = ['title' => 'Article one', 'body' => 'Body 1 is here'];
-        //$db->execute($sql, $bind);
 
-        $sql = "SELECT * FROM articles";
-        $articles = $db->query($sql)->results();
+        // $db->insert('articles', ['title' => 'Article 2', 'body' => 'Article two is here!']);
 
-        Helper::dd($articles);
+        // $db->update('articles', ['title' => 'Article two', 'body' => 'Article 2 is here'], ['id' => 2]);
 
         $this->view->setSiteTitle('Home :: PHP MVC');
         $this->view->render();

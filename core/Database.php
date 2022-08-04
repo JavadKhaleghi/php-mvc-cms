@@ -80,6 +80,51 @@ class Database
         return $this;
     }
 
+    public function insert($table, $values)
+    {
+        $tableFields = [];
+        $queryBinds = [];
+        foreach($values as $key => $value) {
+            $tableFields[] = $key;
+            $queryBinds[] = ":{$key}";
+        }
+
+        $fieldString = implode('`, `', $tableFields);
+        $bindString = implode(', ', $queryBinds);
+        $sqlQuery = "INSERT INTO {$table} (`{$fieldString}`) VALUES ({$bindString});";
+
+        $this->execute($sqlQuery, $values);
+
+        return ! $this->_error;
+    }
+
+    public function update($table, $values, $conditions)
+    {
+        $queryBinds = [];
+        $valueString = '';
+        foreach($values as $field => $value) {
+            $valueString .= ", `{$field}` = :{$field}";
+            $queryBinds[$field] = $value;
+        }
+
+        $valueString = ltrim($valueString, ', ');
+        $sqlQuery = "UPDATE {$table} SET {$valueString}";
+        if(! empty($conditions)) {
+            $conditionString = " WHERE ";
+            foreach($conditions as $field => $value) {
+                $conditionString .= "`{$field}` = :cond{$field}";
+                $queryBinds['cond' . $field] = $value;
+            }
+
+            $conditionString = rtrim($conditionString, ' AND ');
+            $sqlQuery .= $conditionString;
+        }
+
+        $this->execute($sqlQuery, $queryBinds);
+
+        return ! $this->_error;
+    }
+
     public function results()
     {
         return $this->_results;
