@@ -139,4 +139,14 @@ class Database
     {
         return $this->_lastInsertId;
     }
+
+    public function setClass($className)
+    {
+        $this->_class = $className;
+    }
+
+    public function setFetchType($fetchType)
+    {
+        $this->_fetchType = $fetchType;
+    }
 }
