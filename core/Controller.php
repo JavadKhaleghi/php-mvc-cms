@@ -2,7 +2,7 @@
 
 namespace Core;
 
-use Core\{View, Config};
+use Core\{View, Config, Request};
 
 class Controller
 {
@@ -19,5 +19,12 @@ class Controller
         $viewPath = strtolower($controller) . '/' . $action;
         $this->view = new View($viewPath);
         $this->view->setLayout(Config::get('default_layout'));
+        $this->request = new Request();
+        $this->onConstruct();
+    }
+
+    public function onConstruct()
+    {
+        
     }
 }

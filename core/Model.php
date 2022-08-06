@@ -3,8 +3,7 @@
 namespace Core;
 
 use PDO;
-use Core\Database;
-use Core\Request;
+use Core\{Database, Request};
 
 class Model
 {
