@@ -1,4 +1,6 @@
-<?php use Core\Form; ?>
+<?php
+
+use Core\Form; ?>
 
 <?php $this->start('head'); ?>
 
@@ -21,19 +23,20 @@
     <div class="col-md-8 offset-md-2 poster">
         <form action="" method="POST">
             <div class="row">
-                <?= Form::inputBlock('First Name', 'first_name', '', ['class' => 'form-control'], ['class' => 'form-group col-md-6'], $this->errors); ?>
-                <?= Form::inputBlock('Last Name', 'last_name', '', ['class' => 'form-control'], ['class' => 'form-group col-md-6'], $this->errors); ?>
-                <?= Form::inputBlock('Email', 'email', '', ['class' => 'form-control', 'type' => 'email'], ['class' => 'form-group col-md-6'], $this->errors); ?>
+                <?= Form::input('First Name', 'first_name', $this->user->first_name, ['class' => 'form-control'], ['class' => 'form-group col-md-6'], $this->errors); ?>
+                <?= Form::input('Last Name', 'last_name', $this->user->last_name, ['class' => 'form-control'], ['class' => 'form-group col-md-6'], $this->errors); ?>
+                <?= Form::input('Email', 'email', $this->user->email, ['class' => 'form-control', 'type' => 'email'], ['class' => 'form-group col-md-6'], $this->errors); ?>
+                <?= Form::select('Level', 'acl', $this->user->acl, $this->roleOptions, ['class' => 'form-control'], ['class' => 'form-group col-md-6'], $this->errors); ?>
             </div>
 
             <div class="row">
-                <?= Form::inputBlock('Password', 'password', '', ['class' => 'form-control', 'type' => 'password'], ['class' => 'form-group col-md-6'], $this->errors); ?>
-                <?= Form::inputBlock('Confirm Password', 'confirm', '', ['class' => 'form-control', 'type' => 'password'], ['class' => 'form-group col-md-6'], $this->errors); ?>
+                <?= Form::input('Password', 'password', $this->user->password, ['class' => 'form-control', 'type' => 'password'], ['class' => 'form-group col-md-6'], $this->errors); ?>
+                <?= Form::input('Confirm Password', 'confirm', '', ['class' => 'form-control', 'type' => 'password'], ['class' => 'form-group col-md-6'], $this->errors); ?>
             </div>
 
             <div class="text-right">
                 <a href="<?= ROOT ?>" class="btn btn-secondary">Cancel</a>
-                <input class="btn btn-primary" value="Register" type="submit" />
+                <input class="btn btn-primary" type="submit" value="Register">
             </div>
         </form>
     </div>
