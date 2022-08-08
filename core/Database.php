@@ -72,9 +72,15 @@ class Database
     public function query($sql, $bind = [])
     {
         $this->execute($sql, $bind);
+        
         if (! $this->_error) {
             $this->_rowCount = $this->_statement->rowCount();
-            $this->_results = $this->_statement->fetchAll($this->_fetchType);
+
+            if($this->_fetchType === PDO::FETCH_CLASS) {
+                $this->_results = $this->_statement->fetchAll($this->_fetchType, $this->_class);
+            } else {
+                $this->_results = $this->_statement->fetchAll($this->_fetchType);
+            }
         } 
 
         return $this;
@@ -143,6 +149,11 @@ class Database
     public function setClass($className)
     {
         $this->_class = $className;
+    }
+
+    public function getClass()
+    {
+        return $this->_class;
     }
 
     public function setFetchType($fetchType)

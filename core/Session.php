@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Core\{Router, Request};
+
 class Session
 {
     public static function exists($name)
@@ -26,5 +28,25 @@ class Session
     public static function delete($name)
     {
         unset($_SESSION[$name]);
+    }
+
+    public static function csrf()
+    {
+        $request = new Request();
+        $check = $request->get('csrf_token');
+
+        if(self::exists('csrf_token') && self::get('csrf_token') == $check) {
+            return true;
+        }
+
+        Router::redirect('auth/token');
+    }
+
+    public static function createCsrfToken()
+    {
+        $token = md5('csrf' . time());
+        self::set('csrf_token', $token);
+
+        return $token;
     }
 }

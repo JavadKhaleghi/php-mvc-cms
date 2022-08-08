@@ -22,6 +22,7 @@ use Core\Form; ?>
 <div class="row mt-5">
     <div class="col-md-8 offset-md-2 poster">
         <form action="" method="POST">
+            <?= Form::csrfField(); ?>
             <div class="row">
                 <?= Form::input('First Name', 'first_name', $this->user->first_name, ['class' => 'form-control'], ['class' => 'form-group col-md-6'], $this->errors); ?>
                 <?= Form::input('Last Name', 'last_name', $this->user->last_name, ['class' => 'form-control'], ['class' => 'form-group col-md-6'], $this->errors); ?>
@@ -30,7 +31,7 @@ use Core\Form; ?>
             </div>
 
             <div class="row">
-                <?= Form::input('Password', 'password', $this->user->password, ['class' => 'form-control', 'type' => 'password'], ['class' => 'form-group col-md-6'], $this->errors); ?>
+                <?= Form::input('Password', 'password', '', ['class' => 'form-control', 'type' => 'password'], ['class' => 'form-group col-md-6'], $this->errors); ?>
                 <?= Form::input('Confirm Password', 'confirm', '', ['class' => 'form-control', 'type' => 'password'], ['class' => 'form-group col-md-6'], $this->errors); ?>
             </div>
 

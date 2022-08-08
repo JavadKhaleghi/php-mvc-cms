@@ -6,6 +6,7 @@ use Core\Model;
 
 class User extends Model
 {
+    const USER_PERMISSION = 'user';
     const AUTHOR_PERMISSION = 'author';
     const ADMIN_PERMISSION = 'admin';
 
@@ -19,5 +20,14 @@ class User extends Model
     public $banned = 0;
     public $created_at;
     public $updated_at;
+
+    public function beforeSave()
+    {
+        $this->timeStamps();
+
+        if($this->isNew()) {
+            $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        }
+    }
 
 }
