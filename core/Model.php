@@ -227,7 +227,7 @@ class Model
         $isValidated = $validator->runValidation();
         if(! $isValidated) {
             $this->_validationPassed = false;
-            $this->_errors[$validator->field] = $validator->msg;
+            $this->_errors[$validator->field] = $validator->message;
         }
     }
 
