@@ -13,7 +13,7 @@ class Form
         
         $html = "<div {$wrapperString}>";
         $html .= "<label for='{$id}'>{$label}</label>";
-        $html .= "<input id='{$id}' name='{$id}' value='$value' {$inputAttrs}>";
+        $html .= "<input id='{$id}' name='{$id}' value='{$value}' {$inputAttrs}>";
         $html .= "<div class='invalid-feedback'>{$errorMessage}</div>";
         $html .= "</div>";
 

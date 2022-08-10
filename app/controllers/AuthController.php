@@ -27,14 +27,16 @@ class AuthController extends Controller
             $user->save();
         }
 
-        $this->view->user = $user;
         $this->view->setSiteTitle('Register');
+        
+        $this->view->user = $user;
         $this->view->errors = $user->getErrors();
         $this->view->roleOptions = [
             User::USER_PERMISSION   => 'User', 
             User::AUTHOR_PERMISSION => 'Author', 
             User::ADMIN_PERMISSION  => 'Admin'
         ];
+
         $this->view->render();
     }
 }

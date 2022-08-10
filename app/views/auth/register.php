@@ -26,7 +26,7 @@ use Core\Form; ?>
             <div class="row">
                 <?= Form::input('First Name', 'first_name', $this->user->first_name, ['class' => 'form-control'], ['class' => 'form-group col-md-6'], $this->errors); ?>
                 <?= Form::input('Last Name', 'last_name', $this->user->last_name, ['class' => 'form-control'], ['class' => 'form-group col-md-6'], $this->errors); ?>
-                <?= Form::input('Email', 'email', $this->user->email, ['class' => 'form-control', 'type' => 'text'], ['class' => 'form-group col-md-6'], $this->errors); ?>
+                <?= Form::input('Email', 'email', $this->user->email, ['class' => 'form-control', 'type' => 'text', 'autocomplete' => 'off'], ['class' => 'form-group col-md-6'], $this->errors); ?>
                 <?= Form::select('Level', 'acl', $this->user->acl, $this->roleOptions, ['class' => 'form-control'], ['class' => 'form-group col-md-6'], $this->errors); ?>
             </div>
 
