@@ -41,9 +41,9 @@ class Router
         call_user_func_array([$controllerClass, $action], $urlElements);
     }
 
-    public static function redirect($path)
+    public static function redirect($path = '')
     {
-        if (!headers_sent()) {
+        if (! headers_sent()) {
             header('Location: ' . ROOT . $path);
         } else {
             echo '<script type="text/javascript">';

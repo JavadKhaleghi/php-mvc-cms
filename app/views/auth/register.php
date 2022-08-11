@@ -1,6 +1,6 @@
 <?php
 
-use Core\Form; ?>
+use Core\{Form, Session}; ?>
 
 <?php $this->start('head'); ?>
 
@@ -21,6 +21,9 @@ use Core\Form; ?>
 
 <div class="row mt-5">
     <div class="col-md-8 offset-md-2 poster">
+
+        <?= Session::displaySessionAlerts(); ?>
+        
         <form action="" method="POST">
             <?= Form::csrfField(); ?>
             <div class="row">

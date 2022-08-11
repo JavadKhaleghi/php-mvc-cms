@@ -1,3 +1,5 @@
+<?php use Core\Session; ?>
+
 <div class="site-section-cover overlay" style="background-image: url('<?= ROOT ?>app/public/site/images/hero_bg.jpg');">
     <div class="container">
         <div class="row align-items-center justify-content-center">
@@ -61,9 +63,11 @@
     </div>
 </div>
 
-
 <div class="site-section">
     <div class="container">
+
+        <?= Session::displaySessionAlerts(); ?>
+
         <div class="row">
             <div class="col">
                 <div class="heading mb-4">

@@ -34,7 +34,7 @@ class User extends Model
         $this->runValidation(new UniqueValidator($this, ['field' => 'email', 'message' => 'Email has taken before.']));
         $this->runValidation(new RequiredValidator($this, ['field' => 'acl', 'message' => 'User\'s level is required.']));
 
-        if($this->isNew()) {
+        if($this->isNew() || $this->resetPassword) {
             $this->runValidation(new RequiredValidator($this, ['field' => 'password', 'message' => 'Password is required.']));
             $this->runValidation(new MinValidator($this, ['field' => 'password', 'rule' => 8, 'message' => 'Password must be at least 8 characters.']));
             //$this->runValidation(new MaxValidator($this, ['field' => 'password', 'rule' => 256, 'message' => 'Password must be a maximum of 256 charcters.']));
@@ -42,6 +42,8 @@ class User extends Model
             $this->runValidation(new MatchValidator($this, ['field' => 'confirm', 'rule' => $this->password, 'message' => 'Password and confirm must be same.']));
 
             $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        } else {
+            $this->_skipUpdate = ['password'];
         }
     }
 

@@ -49,4 +49,29 @@ class Session
 
         return $token;
     }
+
+    // message type can be:
+    // success, danger, warning, primary, secondary, info. light, dark
+    public static function message($message, $type = 'danger')
+    {
+        $alerts = self::exists('session_alerts') ? self::get('session_alerts') : [];
+        $alerts[$type][] = $message;
+        self::set('session_alerts', $alerts);
+    }
+
+    public static function displaySessionAlerts()
+    {
+        $alerts = self::exists('session_alerts') ? self::get('session_alerts') : [];
+        $html = '';
+
+        foreach($alerts as $type => $messages) {
+            foreach($messages as $message) {
+                $html .= "<div class='alert alert-dismissable alert-{$type}'>{$message}<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>"; 
+            }
+        }
+
+        self::delete('session_alerts');
+
+        return $html;
+    }
 }

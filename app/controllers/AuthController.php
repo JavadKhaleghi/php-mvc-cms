@@ -15,6 +15,11 @@ class AuthController extends Controller
             $user = User::findById($id);
         }
 
+        if(! $user) {
+            Session::message('Access denied: you don not have permissions for this action.');
+            Router::redirect();
+        }
+
         // if form is submitted and the method is POST
         if($this->request->isPost()) {
             Session::csrf();
@@ -24,11 +29,19 @@ class AuthController extends Controller
                 $user->{$field} = $this->request->get($field);
             }
 
-            $user->save();
+            if(! empty($user->password) && $id != 'new') {
+                $user->resetPassword = true;
+            }
+
+            if($user->save()) {
+                $message = ($id == 'new') ? 'New user created.' : 'User updated.';
+                Session::message($message, 'success');
+                Router::redirect();
+            }
         }
 
-        $this->view->setSiteTitle('Register');
-        
+        $pageTitle = $id == 'new' ? 'Add new user' : 'Update user';
+        $this->view->setSiteTitle($pageTitle);
         $this->view->user = $user;
         $this->view->errors = $user->getErrors();
         $this->view->roleOptions = [
