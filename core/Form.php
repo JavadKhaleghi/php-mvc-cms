@@ -41,7 +41,21 @@ class Form
         $html .= "</div>";
 
         return $html;
+    }
 
+    public static function checkbox($label, $id, $checked = '', $inputAttrs = [], $wrapperAttrs = [], $errors = [])
+    {
+        $wrapperString = self::processAttributes($wrapperAttrs);
+        $inputAttrs = self::appendErrors($id, $inputAttrs, $errors);
+        $inputString = self::processAttributes($inputAttrs);
+        $checkedString = $checked == 'on' ? 'checked' : '';
+
+        $html = "<div {$wrapperString}>";
+        $html .= "<input type='checkbox' id='{$id}' name='{$id}' {$inputString} {$checkedString}>";
+        $html .= "<label class='form-check-label' for='{$id}'>{$label}</label>";
+        $html .= "</div>";
+
+        return $html;
     }
 
     public static function appendErrors($key, $inputAttrs, $errors)

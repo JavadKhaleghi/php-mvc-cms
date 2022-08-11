@@ -52,4 +52,48 @@ class AuthController extends Controller
 
         $this->view->render();
     }
+
+    public function loginAction()
+    {
+        $user = new User();
+        $hasError = true;
+
+        if($this->request->isPost()) {
+            Session::csrf();
+            $user->email = $this->request->get('email');
+            $user->password = $this->request->get('password');
+            $user->remember = $this->request->get('remember');
+            $user->validateLogin();
+
+            if(empty($user->getErrors())) {
+                // check user credentials
+                $requestedUser = User::findFirst([
+                    'conditions' => "email = :email",
+                    'bind' => ['email' => $this->request->get('email')]
+                ]);
+
+                if($requestedUser) {
+                    $verifiedPassword = password_verify($this->request->get('password'), $requestedUser->password);
+
+                    if($verifiedPassword) {
+                        // login process
+                        $hasError = false;
+                        $remember = $this->request->get('remember') == 'on';
+                        $requestedUser->login($remember);
+                        Router::redirect();
+                    }
+                }
+            }
+
+            if($hasError) {
+                $user->setError('email', 'Email or password is not correct.');
+                $user->setError('password', '');
+            }
+        }
+
+        $this->view->setSiteTitle('Login');
+        $this->view->user = $user;
+        $this->view->errors = $user->getErrors();
+        $this->view->render();
+    }
 }

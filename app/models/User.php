@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Core\Model;
+use Core\{Model, Session, Cookie};
 use Core\Validators\{RequiredValidator, EmailValidator, MatchValidator, MinValidator, UniqueValidator};
 
 class User extends Model
@@ -12,6 +12,7 @@ class User extends Model
     const ADMIN_PERMISSION = 'admin';
 
     protected static $table = 'users';
+    protected static $_current_user = false;
     public $id;
     public $first_name;
     public $last_name;
@@ -21,6 +22,8 @@ class User extends Model
     public $banned = 0;
     public $created_at;
     public $updated_at;
+    public $confirm;
+    public $remember = '';
 
     public function beforeSave()
     {
@@ -45,6 +48,18 @@ class User extends Model
         } else {
             $this->_skipUpdate = ['password'];
         }
+    }
+
+    public function validateLogin()
+    {
+        $this->runValidation(new RequiredValidator($this, ['field' => 'email', 'message' => 'Email is required.']));
+        $this->runValidation(new RequiredValidator($this, ['field' => 'password', 'message' => 'Password is required.']));
+    }
+
+    public function login($remember = false)
+    {
+        Session::set('logged_in_user', $this->id);
+        self::$_current_user = $this;
     }
 
 }
