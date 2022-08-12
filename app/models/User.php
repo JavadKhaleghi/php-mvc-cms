@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Core\{Model, Session, Cookie};
+use Core\{Model, Session, Cookie, Config};
 use Core\Validators\{RequiredValidator, EmailValidator, MatchValidator, MinValidator, UniqueValidator};
+use App\Models\UserSession;
 
 class User extends Model
 {
@@ -60,6 +61,58 @@ class User extends Model
     {
         Session::set('logged_in_user', $this->id);
         self::$_current_user = $this;
+
+        if($remember) {
+            $currentTime = time();
+            $newHashString = md5("{$this->id}_{$currentTime}");
+            $session = UserSession::findByUserId($this->id);
+
+            if(! $session) {
+                $session = new UserSession();
+            }
+
+            $session->user_id = $this->id;
+            $session->hash = $newHashString;
+            $session->save();
+
+            Cookie::set(Config::get('login_cookie_name'), $newHashString, 60 * 60 * 24 * 30); // 30 days in seconds
+
+        }
     }
 
+    public static function loginUserFromCookie()
+    {
+        $cookieName = Config::get('login_cookie_name');
+
+        if(! Cookie::exists($cookieName)) {
+            return false;
+        }
+
+        $hash = Cookie::get($cookieName);
+        $session = UserSession::findByHashString($hash);
+
+        if(! $session) {
+            return false;
+        }
+
+        $currentUser = self::findById($session->user_id);
+
+        if($currentUser) {
+            $currentUser->login(true);
+        }
+    }
+
+    public static function getCurrentLoggedInUser()
+    {
+        if(! self::$_current_user && Session::exists('logged_in_user')) {
+            $userId = Session::get('logged_in_user');
+            self::$_current_user = self::findById($userId);
+        }
+
+        if(! self::$_current_user) {
+            self::loginUserFromCookie();
+        }
+
+        return self::$_current_user;
+    }
 }

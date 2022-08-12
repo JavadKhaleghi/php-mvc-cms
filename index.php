@@ -3,6 +3,7 @@
 session_start();
 
 use \Core\{Config, Router};
+use App\Models\User;
 
 // application constants
 define('SITE_ROOT', __DIR__);
@@ -21,6 +22,9 @@ spl_autoload_register(function($className) {
         include($path);
     }
 });
+
+// logged in user check
+$currentLoggedInUser = User::getCurrentLoggedInUser();
 
 $rootDirectory = Config::get('root_directory');
 define('ROOT', $rootDirectory);
