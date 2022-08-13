@@ -33,6 +33,8 @@ class AdminController extends Controller
             'order' => 'last_name, first_name'
         ];
 
+        $params = User::mergeWithPagination($params);
+
         $this->view->setSiteTitle('Users');
         $this->view->users = User::find($params);
         $this->view->total = User::findTotal($params);

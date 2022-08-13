@@ -3,6 +3,7 @@
 <?php $this->end(); ?>
 
 <?php $this->start('content'); ?>
+
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2"><?= $this->getSiteTitle() ?></h1>
     <a href="<?= ROOT ?>auth/register" class="btn btn-sm btn-success">&plus;&nbsp;Add user</a>
@@ -33,5 +34,9 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+
+    <?php $this->section('admin/sections/pagination'); ?>
+
 </div>
+
 <?php $this->end(); ?>
