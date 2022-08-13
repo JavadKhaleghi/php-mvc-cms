@@ -128,4 +128,14 @@ class User extends Model
 
         Cookie::delete(Config::get('login_cookie_name'));
     }
+
+    public function hasPermission($acl)
+    {
+        return $this->acl == $acl;
+    }
+
+    public function displayFullName()
+    {
+        return trim($this->first_name . ' ' . $this->last_name);
+    }
 }

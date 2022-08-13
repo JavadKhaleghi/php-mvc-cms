@@ -89,7 +89,7 @@ class Model
         $sqlQuery .= $conditions;
         $db = static::getDatabase();
         $results = $db->query($sqlQuery, $bind);
-        $total = $results->getRowCount() > 0 ? $results->results()[0]->total : 0;
+        $total = sizeof($results->results()) > 0 ? $results->results()[0]->total : 0;
 
         return $total;
     }

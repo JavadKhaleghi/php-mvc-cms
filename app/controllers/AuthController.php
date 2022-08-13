@@ -36,12 +36,13 @@ class AuthController extends Controller
             if($user->save()) {
                 $message = ($id == 'new') ? 'New user created.' : 'User updated.';
                 Session::message($message, 'success');
-                Router::redirect();
+                Router::redirect('admin/users');
             }
         }
 
         $pageTitle = $id == 'new' ? 'Add new user' : 'Update user';
-        $this->view->setSiteTitle($pageTitle);
+        $this->view->setLayout('admin');
+        $this->view->setSiteTitle('Add User');
         $this->view->user = $user;
         $this->view->errors = $user->getErrors();
         $this->view->roleOptions = [
