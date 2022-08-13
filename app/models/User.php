@@ -115,4 +115,17 @@ class User extends Model
 
         return self::$_current_user;
     }
+
+    public function logout()
+    {
+        Session::delete('logged_in_user');
+        self::$_current_user = false;
+        $userSession = UserSession::findByUserId($this->id);
+
+        if($userSession) {
+            $userSession->delete();
+        }
+
+        Cookie::delete(Config::get('login_cookie_name'));
+    }
 }

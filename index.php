@@ -33,6 +33,8 @@ $url = $_SERVER['REQUEST_URI'];
 $url = str_replace(ROOT, '', $url); // delete site root from URL
 $url = preg_replace('/(\?.+)/', '', $url); // delete query strings from URL
 
+
+
 Router::route($url);
 
 
