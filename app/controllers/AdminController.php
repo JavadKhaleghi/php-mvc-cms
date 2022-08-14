@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use Core\Controller;
-use App\Models\{User};
+use App\Models\{Category, User};
 use Core\{Router, Session};
 
 class AdminController extends Controller
@@ -67,5 +67,60 @@ class AdminController extends Controller
 
         Session::message($message, $messageType);
         Router::redirect('admin/users');
+    }
+
+    public function categoriesAction()
+    {
+        Router::checkPermission('admin', 'admin/articles');
+        $params = ['order' => 'name'];
+        $params = Category::mergeWithPagination($params);
+
+        $this->view->setSiteTitle('Categories');
+        $this->view->categories = Category::find($params);
+        $this->view->total = Category::findTotal($params);
+        $this->view->render();
+    }
+
+    public function categoryAction($id = 'new')
+    {
+        Router::checkPermission('admin', 'admin/articles');
+        $category = $id == 'new' ? new Category() : Category::findById($id);
+
+        if(! $category) {
+            Session::message('Category does not exist.');
+            Router::redirect('admin/categories');
+        }
+
+        if($this->request->isPost()) {
+            Session::csrf();
+            $category->name = $this->request->get('name');
+
+            if($category->save()) {
+                Session::message('Category saved.', 'success');
+                Router::redirect('admin/categories');
+            }
+        }
+
+        $pageTitle = $id == 'new' ? 'Add category' : 'Edit category';
+        $this->view->setLayout('admin');
+        $this->view->setSiteTitle($pageTitle);
+        $this->view->category = $category;
+        $this->view->errors = $category->getErrors();
+        $this->view->render();
+    }
+
+    public function deleteCategoryAction($id)
+    {
+        Router::checkPermission('admin', 'admin/articles');
+        $category = Category::findById($id);
+
+        if(! $category) {
+            Session::message('Category does not exist.');
+            Router::redirect('admin/categories');
+        } else {
+            $category->delete();
+            Session::message('Category deleted.', 'success');
+            Router::redirect('admin/categories');
+        }
     }
 }

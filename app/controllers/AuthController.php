@@ -42,7 +42,7 @@ class AuthController extends Controller
 
         $pageTitle = $id == 'new' ? 'Add new user' : 'Update user';
         $this->view->setLayout('admin');
-        $this->view->setSiteTitle('Add User');
+        $this->view->setSiteTitle($pageTitle);
         $this->view->user = $user;
         $this->view->errors = $user->getErrors();
         $this->view->roleOptions = [
