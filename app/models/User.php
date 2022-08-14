@@ -113,6 +113,11 @@ class User extends Model
             self::loginUserFromCookie();
         }
 
+        if(self::$_current_user && self::$_current_user->banned) {
+            self::$_current_user->logout();
+            Session::message('You are blocked by admin.');
+        }
+
         return self::$_current_user;
     }
 
@@ -131,6 +136,10 @@ class User extends Model
 
     public function hasPermission($acl)
     {
+        if(is_array($acl)) {
+            return in_array($this->acl, $acl);
+        }
+        
         return $this->acl == $acl;
     }
 

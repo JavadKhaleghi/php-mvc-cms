@@ -9,7 +9,7 @@ use Core\Helper;
         <li class="<?= Helper::menuActiveClass('') ?>"><a href="<?= ROOT ?>" class="nav-link">Home</a></li>
         <li class="<?= Helper::menuActiveClass('articles') ?>"><a href="<?= ROOT ?>articles" class="nav-link">Blog</a></li>
 
-        <li class="nav-item dropdown <?php if(Helper::isCurrentPage('auth/login') || Helper::isCurrentPage('auth/register') || Helper::isCurrentPage('auth/register')): ?><?= 'active' ?><?php endif; ?>">
+        <li class="nav-item dropdown <?php if (Helper::isCurrentPage('auth/login') || Helper::isCurrentPage('auth/register') || Helper::isCurrentPage('auth/register')) : ?><?= 'active' ?><?php endif; ?>">
             <a href="#" class="nav-link dropdown-toggle" id="dropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Users
             </a>
@@ -18,7 +18,7 @@ use Core\Helper;
                     <li><a href="<?= ROOT ?>auth/login" class="dropdown-item text-black">Login</a></li>
                     <li><a href="<?= ROOT ?>auth/register" class="dropdown-item text-black">Register</a></li>
                 <?php else : ?>
-                    <li><a href="#" class="dropdown-item text-black">Admin Panel</a></li>
+                    <li><a href="<?= ROOT ?>admin/articles" class="dropdown-item text-black">Admin Panel</a></li>
                 <?php endif; ?>
             </ul>
         </li>

@@ -26,9 +26,11 @@
                     <td><?= $user->displayFullName() ?></td>
                     <td><?= $user->email ?></td>
                     <td><?= ucfirst($user->acl) ?></td>
-                    <td>...</td>
+                    <td><?= $user->banned ? 'Blocked' : 'Active' ?></td>
                     <td>
                         <a href="<?= ROOT ?>auth/register/<?= $user->id ?>" class="btn btn-sm btn-info">Edit</a>
+                        <a href="<?= ROOT ?>admin/toggleUserStatus/<?= $user->id ?>" class="btn btn-sm btn-<?= $user->banned ? 'secondary' : 'warning' ?>"><?= $user->banned ? 'Unblock' : 'Block' ?></a>
+                        <button class="btn btn-sm btn-danger" onclick="confirmAction('<?= $user->id ?>')">Delete</button>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -38,5 +40,13 @@
     <?php $this->section('admin/sections/pagination'); ?>
 
 </div>
+
+<script>
+    function confirmAction(userId) {
+        if (window.confirm("Are you sure for this action?")) {
+            window.location.href = `<?= ROOT ?>admin/deleteUser/${userId}`;
+        }
+    }
+</script>
 
 <?php $this->end(); ?>

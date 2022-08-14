@@ -2,6 +2,9 @@
 
 namespace Core;
 
+use Core\Session;
+use App\Models\User;
+
 class Router
 {
     public static function route($url)
@@ -55,5 +58,16 @@ class Router
         }
 
         exit();
+    }
+
+    public static function checkPermission($userLevel, $redirectPath, $message = 'Access denied: 403')
+    {
+        $user = User::getCurrentLoggedInUser();
+        $hasPermission = $user && $user->hasPermission($userLevel);
+
+        if (!$hasPermission) {
+            Session::message($message);
+            self::redirect($redirectPath);
+        }
     }
 }
