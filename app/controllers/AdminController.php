@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use Core\Controller;
-use App\Models\{Article, Category, User};
+use App\Models\{Article, Category, Upload, User};
 use Core\{Router, Session};
 
 class AdminController extends Controller
@@ -42,8 +42,32 @@ class AdminController extends Controller
             $article->category_id = $this->request->get('category_id');
             $article->status = $this->request->get('status');
             $article->user_id = $this->currentUser->id;
-
+    
+            // file upload
+            $upload = new Upload('cover_image');
+            
+            if ($id != 'new') {
+                $upload->required = false;
+            }
+            
+            $uploadErrors = $upload->validate();
+            
+            if (! empty($uploadErrors)) {
+                foreach ($uploadErrors as $filed => $error) {
+                    $article->setError($filed, $error);
+                }
+            }
+            
             if ($article->save()) {
+                if (! empty($upload->temp)) {
+                    $filePath = 'app/public/uploads/cover/cover_img_' . time() . '.' . $upload->extension;
+                    
+                    if ($upload->upload(SITE_ROOT . DS . $filePath)) {
+                        $article->cover_image = $filePath;
+                        $article->save();
+                    }
+                }
+                
                 Session::message('Article saved.', 'success');
                 Router::redirect('admin/articles');
             }
@@ -57,6 +81,7 @@ class AdminController extends Controller
         }
 
         $pageTitle = $id == 'new' ? 'Add article' : 'Edit article';
+        $this->view->hasImage = ! empty($article->cover_image);
         $this->view->statusOptions = ['private' => 'Private', 'public' => 'Public'];
         $this->view->categoryOptions = $categoryOptions;
         $this->view->setLayout('admin');
@@ -161,11 +186,11 @@ class AdminController extends Controller
 
         if(! $category) {
             Session::message('Category does not exist.');
-            Router::redirect('admin/categories');
         } else {
             $category->delete();
             Session::message('Category deleted.', 'success');
-            Router::redirect('admin/categories');
         }
+        
+        Router::redirect('admin/categories');
     }
 }

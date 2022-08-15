@@ -8,12 +8,12 @@ class Form
     {
         $wrapperString = self::processAttributes($wrapperAttrs);
         $inputAttrs = self::appendErrors($id, $inputAttrs, $errors);
-        $inputAttrs = self::processAttributes($inputAttrs);
+        $inputString = self::processAttributes($inputAttrs);
         $errorMessage = array_key_exists($id, $errors) ? $errors[$id] : '';
         
         $html = "<div {$wrapperString}>";
         $html .= "<label for='{$id}'>{$label}</label>";
-        $html .= "<input id='{$id}' name='{$id}' value='{$value}' {$inputAttrs}>";
+        $html .= "<input id='{$id}' name='{$id}' value='{$value}' {$inputString}>";
         $html .= "<div class='invalid-feedback'>{$errorMessage}</div>";
         $html .= "</div>";
 
@@ -24,15 +24,31 @@ class Form
     {
         $wrapperString = self::processAttributes($wrapperAttrs);
         $inputAttrs = self::appendErrors($id, $inputAttrs, $errors);
-        $inputAttrs = self::processAttributes($inputAttrs);
+        $inputString = self::processAttributes($inputAttrs);
         $errorMessage = array_key_exists($id, $errors) ? $errors[$id] : '';
 
         $html = "<div {$wrapperString}>";
         $html .= "<label for='{$id}'>{$label}</label>";
-        $html .= "<textarea id='{$id}' name='{$id}' {$inputAttrs}>{$value}</textarea>";
+        $html .= "<textarea id='{$id}' name='{$id}' {$inputString}>{$value}</textarea>";
         $html .= "<div class='invalid-feedback'>{$errorMessage}</div>";
         $html .= "</div>";
 
+        return $html;
+    }
+    
+    public static function file($label, $id, $inputAttrs = [], $wrapperAttrs = [], $errors = [])
+    {
+        $wrapperString = self::processAttributes($wrapperAttrs);
+        $inputAttrs = self::appendErrors($id, $inputAttrs, $errors);
+        $inputString = self::processAttributes($inputAttrs);
+        $errorMessage = array_key_exists($id, $errors) ? $errors[$id] : '';
+        
+        $html = "<div {$wrapperString}>";
+        $html .= "<label for='{$id}'>{$label}</label>";
+        $html .= "<input type='file' id='{$id}' name='{$id}' {$inputString}>";
+        $html .= "<div class='invalid-feedback'>{$errorMessage}</div>";
+        $html .= "</div>";
+        
         return $html;
     }
 
@@ -40,12 +56,12 @@ class Form
     {
         $wrapperString = self::processAttributes($wrapperAttrs);
         $inputAttrs = self::appendErrors($id, $inputAttrs, $errors);
-        $inputAttrs = self::processAttributes($inputAttrs);
+        $inputString = self::processAttributes($inputAttrs);
         $errorMessage = array_key_exists($id, $errors) ? $errors[$id] : '';
 
         $html = "<div {$wrapperString}>";
         $html .= "<label for='{$id}'>{$label}</label>";
-        $html .= "<select id='{$id}' name='{$id}' {$inputAttrs}>";
+        $html .= "<select id='{$id}' name='{$id}' {$inputString}>";
 
         foreach($options as $optionValue => $display) {
             $selected = $optionValue == $value ? ' selected' : '';

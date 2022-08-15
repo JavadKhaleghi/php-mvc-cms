@@ -53,9 +53,17 @@
                 <?= Form::select('Category', 'category_id', $this->article->category_id, $this->categoryOptions, ['class' => 'form-control'], ['class' => 'form-group col-md-2 mb-2'], $this->errors); ?>
                 <?= Form::select('Status', 'status', $this->article->status, $this->statusOptions, ['class' => 'form-control'], ['class' => 'form-group col-md-2 mb-2'], $this->errors); ?>
                 <?= Form::textarea('Body', 'body', html_entity_decode($this->article->body), ['class' => 'form-control', 'rows' => '15'], ['class' => 'form-group col-md-12 mb-2'], $this->errors); ?>
+				<?= Form::file('Cover image', 'cover_image', ['class' => 'form-control'], ['class' => 'form-group col-md-12 mb-2'], $this->errors); ?>
             </div>
+			
+			<?php if ($this->hasImage) : ?>
+				<div class="d-flex align-items-center">
+					<label>Image</label>&nbsp;&nbsp;
+					<img src="<?= ROOT . $this->article->cover_image ?>" alt="" style="height:100px;object-fit: cover;">
+				</div>
+			<?php endif; ?>
 
-            <div class="mt-3">
+            <div class="mt-3 mb-5">
                 <input class="btn btn-primary" type="submit" value="Save">
                 <a href="<?= ROOT ?>admin/articles" class="btn btn-secondary">Cancel</a>
             </div>
