@@ -6,6 +6,7 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2"><?= $this->getSiteTitle() ?></h1>
+    <a href="<?= ROOT ?>admin/article/new" class="btn btn-sm btn-success">&plus;&nbsp;Add article</a>
 </div>
 
 <div class="table-responsive">
@@ -38,7 +39,7 @@
     </table>
 
     <?php $this->section('admin/sections/pagination'); ?>
-    
+
 </div>
 
 <?php $this->end(); ?>

@@ -20,6 +20,22 @@ class Form
         return $html;
     }
 
+    public static function textarea($label, $id, $value, $inputAttrs = [], $wrapperAttrs = [], $errors = [])
+    {
+        $wrapperString = self::processAttributes($wrapperAttrs);
+        $inputAttrs = self::appendErrors($id, $inputAttrs, $errors);
+        $inputAttrs = self::processAttributes($inputAttrs);
+        $errorMessage = array_key_exists($id, $errors) ? $errors[$id] : '';
+
+        $html = "<div {$wrapperString}>";
+        $html .= "<label for='{$id}'>{$label}</label>";
+        $html .= "<textarea id='{$id}' name='{$id}' {$inputAttrs}>{$value}</textarea>";
+        $html .= "<div class='invalid-feedback'>{$errorMessage}</div>";
+        $html .= "</div>";
+
+        return $html;
+    }
+
     public static function select($label, $id, $value, $options, $inputAttrs = [], $wrapperAttrs = [], $errors = [])
     {
         $wrapperString = self::processAttributes($wrapperAttrs);

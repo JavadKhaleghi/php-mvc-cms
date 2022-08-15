@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use Core\Controller;
-use App\Models\{Category, User};
+use App\Models\{Article, Category, User};
 use Core\{Router, Session};
 
 class AdminController extends Controller
@@ -18,6 +18,51 @@ class AdminController extends Controller
     {
         Router::checkPermission(['author', 'admin'], '');
         $this->view->setSiteTitle('Articles');
+        $this->view->render();
+    }
+
+    public function articleAction($id = 'new')
+    {
+        Router::checkPermission('admin', 'admin/articles');
+        $params = [
+            'conditions' => "id = :id AND user_id = :user_id",
+            'bind' => ['id' => $id, 'user_id' => $this->currentUser->id]
+        ];
+        $article = $id == 'new' ? new Article() : Article::findFirst($params);
+
+        if (! $article) {
+            Session::message('Article does not exist or you do not have permission to edit this.');
+            Router::redirect('admin/articles');
+        }
+
+        if ($this->request->isPost()) {
+            Session::csrf();
+            $article->title = $this->request->get('title');
+            $article->body = $this->request->get('body');
+            $article->category_id = $this->request->get('category_id');
+            $article->status = $this->request->get('status');
+            $article->user_id = $this->currentUser->id;
+
+            if ($article->save()) {
+                Session::message('Article saved.', 'success');
+                Router::redirect('admin/articles');
+            }
+        }
+
+        $categories = Category::find(['order' => 'name']);
+        $categoryOptions = [0 => 'Uncategorized'];
+
+        foreach($categories as $category) {
+            $categoryOptions[$category->id] = $category->name;
+        }
+
+        $pageTitle = $id == 'new' ? 'Add article' : 'Edit article';
+        $this->view->statusOptions = ['private' => 'Private', 'public' => 'Public'];
+        $this->view->categoryOptions = $categoryOptions;
+        $this->view->setLayout('admin');
+        $this->view->setSiteTitle($pageTitle);
+        $this->view->article = $article;
+        $this->view->errors = $article->getErrors();
         $this->view->render();
     }
 

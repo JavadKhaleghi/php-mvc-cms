@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="mt-3">
-                    <input class="btn btn-primary" type="submit" value="Submit">
+                    <input class="btn btn-primary" type="submit" value="Save">
                     <a href="<?= ROOT ?>admin/categories" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>

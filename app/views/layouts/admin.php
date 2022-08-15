@@ -80,6 +80,9 @@ use Core\{Helper, Session};
 
     <!-- Custom styles for this template -->
     <link href="<?= ROOT ?>app/public/admin/css/dashboard.css" rel="stylesheet">
+
+    <?php $this->content('head'); ?>
+    
 </head>
 
 <body>

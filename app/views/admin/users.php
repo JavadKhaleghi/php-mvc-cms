@@ -27,7 +27,7 @@
                     <td><?= $user->email ?></td>
                     <td><?= ucfirst($user->acl) ?></td>
                     <td><?= $user->banned ? 'Blocked' : 'Active' ?></td>
-                    <td>
+                    <td style="text-align: right;">
                         <a href="<?= ROOT ?>auth/register/<?= $user->id ?>" class="btn btn-sm btn-info">Edit</a>
                         <a href="<?= ROOT ?>admin/toggleUserStatus/<?= $user->id ?>" class="btn btn-sm btn-<?= $user->banned ? 'secondary' : 'warning' ?>"><?= $user->banned ? 'Unblock' : 'Block' ?></a>
                         <button class="btn btn-sm btn-danger" onclick="confirmAction('<?= $user->id ?>')">Delete</button>

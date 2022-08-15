@@ -22,7 +22,7 @@
             <?php foreach ($this->categories as $category) : ?>
                 <tr>
                     <td><?= $category->name ?></td>
-                    <td>
+                    <td style="text-align: right;">
                         <a href="<?= ROOT ?>admin/category/<?= $category->id ?>" class="btn btn-sm btn-info">Edit</a>
                         <button class="btn btn-sm btn-danger" onclick="confirmAction('<?= $category->id ?>')">Delete</button>
                     </td>
