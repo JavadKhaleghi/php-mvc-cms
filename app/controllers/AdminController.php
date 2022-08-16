@@ -17,13 +17,23 @@ class AdminController extends Controller
     public function articlesAction()
     {
         Router::checkPermission(['author', 'admin'], '');
+        $params = [
+            'conditions' => "user_id = :user_id",
+            'bind' => ['user_id' => $this->currentUser->id],
+            'order' => 'created_at DESC'
+        ];
+        
+        $params = Article::mergeWithPagination($params);
+    
         $this->view->setSiteTitle('Articles');
+        $this->view->articles = Article::find($params);
+        $this->view->total = Article::findTotal($params);
         $this->view->render();
     }
 
     public function articleAction($id = 'new')
     {
-        Router::checkPermission('admin', 'admin/articles');
+        Router::checkPermission(['author', 'admin'], 'admin/articles');
         $params = [
             'conditions' => "id = :id AND user_id = :user_id",
             'bind' => ['id' => $id, 'user_id' => $this->currentUser->id]
@@ -89,6 +99,26 @@ class AdminController extends Controller
         $this->view->article = $article;
         $this->view->errors = $article->getErrors();
         $this->view->render();
+    }
+    
+    public function deleteArticleAction($id)
+    {
+        Router::checkPermission(['author', 'admin'], 'admin/articles');
+        $params = [
+            'conditions' => "id = :id AND user_id = :user_id",
+            'bind' => ['id' => $id, 'user_id' => $this->currentUser->id]
+        ];
+        
+        $article = Article::findFirst($params);
+        if(! $article) {
+            Session::message('Article does not exist or you do not have permission for this action.');
+        } else {
+            $article->delete();
+            unlink(SITE_ROOT . DS . $article->cover_image);
+            Session::message('Article deleted.', 'success');
+        }
+        
+        Router::redirect('admin/articles');
     }
 
     public function usersAction()
