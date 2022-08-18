@@ -44,12 +44,12 @@ class Upload
         }
         
         // check file size
-        if ($this->size > $this->maxSize) {
+        if ($this->size > $this->maxSize && ! empty($this>$this->temp)) {
             $this->errors[$this->field] = 'File size cannot be greater than ' . $this->formatBytes($this->maxSize);
         }
         
         // check allowed file type
-        if (empty($this->errors) && !empty($this->tmp)) {
+        if (empty($this->errors) && ! empty($this>$this->temp)) {
             $fileInfo = new \finfo(FILEINFO_MIME_TYPE);
             $fileType = $fileInfo->file($this->temp);
     
