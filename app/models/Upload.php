@@ -49,7 +49,7 @@ class Upload
         }
         
         // check allowed file type
-        if (empty($this->errors) && ! empty($this>$this->temp)) {
+        if (empty($this->errors) && ! empty($this->temp)) {
             $fileInfo = new \finfo(FILEINFO_MIME_TYPE);
             $fileType = $fileInfo->file($this->temp);
     

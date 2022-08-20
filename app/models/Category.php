@@ -16,4 +16,18 @@ class Category extends Model
         $this->runValidation(new RequiredValidator($this, ['field' => 'name', 'message' => 'Name is required.']));
         $this->runValidation(new UniqueValidator($this, ['field' => 'name', 'message' => 'Category name already exists.']));
     }
+    
+    public static function findAllWithArticles()
+    {
+        $params = [
+            'columns' => 'categories.*',
+            'joins' => [
+                ['articles', 'articles.category_id = categories.id']
+            ],
+            'group' => 'categories.id',
+            'order' => 'categories.name'
+        ];
+        
+        return self::find($params);
+    }
 }

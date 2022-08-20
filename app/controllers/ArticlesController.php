@@ -90,4 +90,32 @@ class ArticlesController extends Controller
         $this->view->setSiteTitle('Author: ' . $author->displayFullName());
         $this->view->render('articles/index');
     }
+    
+    public function showAction($articleId)
+    {
+        $params = [
+            'columns' => "articles.*, users.first_name, users.last_name, category.name AS category, category.id AS category_id",
+            'conditions' => "articles.id = :id AND articles.status = 'public'",
+            'joins' => [
+                ['users', 'users.id = articles.user_id'],
+                ['categories', 'category.id = articles.category_id', 'category', 'LEFT']
+            ],
+            'bind' => ['id' => $articleId]
+        ];
+        
+        $article = Article::findFirst($params);
+        
+        if (! $article) {
+            Router::redirect('articles/notFound');
+        }
+    
+        $this->view->setSiteTitle($article->title);
+        $this->view->article = $article;
+        $this->view->render();
+    }
+    
+    public function notFoundAction()
+    {
+        $this->view->render();
+    }
 }
